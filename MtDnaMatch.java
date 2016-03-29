@@ -128,18 +128,6 @@ public class MtDnaMatch extends DnaMatch {
                 super.toString() + Settings.SEPARATOR + name + // SEPARATOR + fn + SEPARATOR + mn + SEPARATOR + ln +
                 Settings.TAB + email + Settings.TAB + mda + Settings.TAB + haplo +
                 sdf.format(md.getTime());
-                
-/*                md.get(Calendar.DAY_OF_MONTH) + "." +
-                (md.get(Calendar.MONTH) + 1) +
-                (md.get(Calendar.YEAR) + 1900);
-*/                
-    }
-
-    /*
-    *   Aputulostus päivämääriin. Lopullisesta ohjelmasta tämä metodi pois.
-    */
-    private static void tulosta(GregorianCalendar d) {
-        System.out.println( d.get(Calendar.DAY_OF_MONTH) + "." + (d.get(Calendar.MONTH) + 1) + "." + (d.get(Calendar.YEAR) + 1900) + ".");
     }
 }
 
