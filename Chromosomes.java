@@ -26,16 +26,15 @@ public class Chromosomes {
      */
     public static void main(String[] args) {
                 
-        // Siltamäki, Helsinki, Finland: N = 6683508.0 E = 388611.0
-        Location paikka = new Location(new Degrees(DegreeType.NORTH, 6683508.0),
-                                       new Degrees(DegreeType.EAST, 388611.0));
+        Location paikka = new Location(new Degrees(DegreeType.NORTH, 0.0),
+                                       new Degrees(DegreeType.EAST, 0.0));
         
         Person i1;
         i1 = new Person("Ilpo Kantonen", "Ilpo", "Kullervo", "Kantonen",
-                         new GregorianCalendar(62,2,16), SexType.MALE, "ilpo@iki.fi");
+                         new GregorianCalendar(1,1,70), SexType.MALE, "something@somewhere.fi");
         
         DnaPerson ilpo;
-        ilpo = new DnaPerson(i1,"N-Y5003", "U8a1a1b", "F439365", paikka, ExperienceType.BASIC);
+        ilpo = new DnaPerson(i1,"abc", "def", "12345", paikka, ExperienceType.BASIC);
         
         Settings s = new Settings(0);
         
