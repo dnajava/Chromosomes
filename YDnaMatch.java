@@ -80,38 +80,16 @@ public class YDnaMatch extends DnaMatch {
                     String[] parts2;
                     parts2 = parts[9].split("/");
                     
-/*                    if(line.equals("\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"")) {
-                        System.out.println("Loppu tuli tiedoille.");
-                        continue;
-                    }
-*/                    
-
-                    Settings s = new Settings(3);
-
-                    if(s.getDebug() > 1) {
-                        for(int j=0;j<parts2.length;j++)
-                            System.out.println("Parts2 " + j + " = ***" + parts2[j] + "***");
-                    }
-
                     GregorianCalendar apu = new GregorianCalendar(
                             Integer.parseInt(parts2[2]) - 1900,
                             Integer.parseInt(parts2[1]) - 1,
                             Integer.parseInt(parts2[0]) );
 
-                    if(s.getDebug() > 2) tulosta(apu);
-                    
                     YDnaMatch cmatch = new YDnaMatch(Integer.parseInt(parts[0]), parts[1],
                             parts[2], parts[3], parts[4], parts[5], parts[6], parts[7],
                             apu );
 
-                    if (s.getDebug() > 0) System.out.println("Lisätään uusi tieto listana.");
                     add = lista.add(cmatch);
-
-                    if (s.getDebug() > 0) {
-                        System.out.println("***ALKU***");
-                        for (YDnaMatch y : lista) { System.out.println(y);}
-                        System.out.println("***LOPPU***");
-                    }
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Virhe: " + e);

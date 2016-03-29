@@ -6,6 +6,7 @@
 package chromosomes;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -95,27 +96,10 @@ public class MtDnaMatch extends DnaMatch {
                     String[] parts2;
                     parts2 = parts[8].split("/");
 
-                    
-/*                    if(line.equals("\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"")) {
-                        System.out.println("Loppu tuli tiedoille.");
-                        continue;
-                    }
-*/                    
                     GregorianCalendar apu = new GregorianCalendar(
-                            Integer.parseInt( (parts2[2]).substring(0,4)) - 1900,
-                            Integer.parseInt(parts2[1]) - 1,
-                            Integer.parseInt( (parts2[0]).substring(1,3)));
-                    
-                    s.setDebug(0);
-                    if(s.getDebug() > 2) {
-                        System.out.print("DEBUG-tietoa: ");
-                        System.out.println("PARTS[0] " + parts[0] + "kok.lukuna: " + Integer.parseInt(parts[0]));
-                        for(int jk=1;jk<9;jk++)
-                            System.out.println("PARTS[" + jk + "] = ***" + parts[jk] + "***");
-                    }
-
-                    /* for(int jkl=0;jkl<9;jkl++)
-                        if(parts[jkl] == null ) System.out.println("Parts " + jkl + " on null"); */
+                            (Integer.parseInt( parts2[2]) - 1900),
+                            (Integer.parseInt(parts2[1]) - 1),
+                            (Integer.parseInt( parts2[0])) );
 
                     MtDnaMatch cmatch = new MtDnaMatch(Integer.parseInt(parts[0]), parts[1],
                             parts[2], parts[3], parts[4], parts[5], parts[6], parts[7],
@@ -123,20 +107,7 @@ public class MtDnaMatch extends DnaMatch {
                     
                     if(s.getDebug() > 1) System.out.println("Sijoitus cmatchiin tehty.");
                     
-                    // if(s.getDebug() > 0) System.out.println("Match = ", cmatch.toString());
-
                     add = lista.add(cmatch);
-                    
-                    if(s.getDebug() > 0)
-                        System.out.println("Uusi mätsi lisättiin listaan");
-
-                    s.setDebug(1);
-                    
-                    if(s.getDebug() > 0) {
-                        System.out.println("***ALKU***");
-                        for (MtDnaMatch m : lista) { System.out.println(m);}
-                        System.out.println("***LOPPU***");
-                    }
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Virhe: " + e);
@@ -151,12 +122,17 @@ public class MtDnaMatch extends DnaMatch {
 
     @Override
     public String toString() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        
         return  Settings.TAB +
                 super.toString() + Settings.SEPARATOR + name + // SEPARATOR + fn + SEPARATOR + mn + SEPARATOR + ln +
                 Settings.TAB + email + Settings.TAB + mda + Settings.TAB + haplo +
-                md.get(Calendar.DAY_OF_MONTH) + "." +
+                sdf.format(md.getTime());
+                
+/*                md.get(Calendar.DAY_OF_MONTH) + "." +
                 (md.get(Calendar.MONTH) + 1) +
                 (md.get(Calendar.YEAR) + 1900);
+*/                
     }
 
     /*
