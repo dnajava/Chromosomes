@@ -107,9 +107,6 @@ public class YDnaMatch extends DnaMatch {
         final char SEPARATOR = ',';
         final String TAB = "\t";
         
-        /* return  "" + gd + SEPARATOR + name + // SEPARATOR + fn + SEPARATOR + mn + SEPARATOR + ln +
-                TAB + email + TAB + mda + TAB + haplo + TAB + md; */
-        
         return  "" + super.toString() + Settings.SEPARATOR + name +
         Settings.TAB + email + Settings.TAB + mda + Settings.TAB + haplo +
         md.get(Calendar.DAY_OF_MONTH) + "." +
@@ -117,12 +114,4 @@ public class YDnaMatch extends DnaMatch {
         (md.get(Calendar.YEAR) + 1900);
 
     }
-
-    /*
-    *   Aputulostus päivämääriin. Lopullisesta ohjelmasta tämä metodi pois.
-    */
-    private static void tulosta(GregorianCalendar d) {
-        System.out.println( d.get(Calendar.DAY_OF_MONTH) + "." + (d.get(Calendar.MONTH) + 1) + "." + (d.get(Calendar.YEAR) + 1900) + ".");
-    }
-
 }
