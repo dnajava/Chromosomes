@@ -7,6 +7,7 @@ package chromosomes;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -21,16 +22,18 @@ public class YDnaMatch extends DnaMatch {
     String name, fn,mn,ln;      // Full name, first name, middle name and last name
     String mda;                 // Most distant ancestor
     String haplo;
+    String snp;
     GregorianCalendar md;       // Date to match found
     
     YDnaMatch() {
         super();
         mda = "";
         haplo = "";
+        snp = "";
         md = new GregorianCalendar();
     }
     
-    YDnaMatch(int a, String n, String e, String m, String s, String em, String ea, String h, GregorianCalendar d) {
+    YDnaMatch(int a, String n, String e, String m, String s, String em, String ea, String h, String psnp, GregorianCalendar d) {
         super(a, d, new Person(), new Person(), ea, em);
         mda = "";
         name = n;
@@ -38,6 +41,7 @@ public class YDnaMatch extends DnaMatch {
         mn = m;
         ln = s;
         haplo = h;
+        snp = psnp;
         md = d;
     }
     
@@ -54,7 +58,10 @@ public class YDnaMatch extends DnaMatch {
         lista = new ArrayList<>();
         ChromoMatch cm;
         boolean add = false;
+        int j2 = 0;
         
+        Settings s = new Settings(1);
+
         try {
             Scanner scan = new Scanner(new File(fn));
         
@@ -64,32 +71,29 @@ public class YDnaMatch extends DnaMatch {
             
             try {
                 while(scan.hasNextLine()){
+                    String[] parts = new String[8]; // = Tools.split2(line);
                     String line = scan.nextLine();
-                    
-                    String[] parts;
-                    parts = line.split(",");
-                    
-                    // Skip citation marks
-                    for(int j=0;j<parts.length;j++) {
-                        if((parts[j]).length() > 2)
-                            parts[j] = (parts[j]).substring(1,(parts[j].length() - 1));
-                        else
-                            parts[j] = "";
-                    }
-                    
-                    String[] parts2;
-                    parts2 = parts[9].split("/");
-                    
-                    GregorianCalendar apu = new GregorianCalendar(
-                            Integer.parseInt(parts2[2]) - 1900,
-                            Integer.parseInt(parts2[1]) - 1,
-                            Integer.parseInt(parts2[0]) );
 
-                    YDnaMatch cmatch = new YDnaMatch(Integer.parseInt(parts[0]), parts[1],
-                            parts[2], parts[3], parts[4], parts[5], parts[6], parts[7],
+                    parts = Tools.split2(line,s.Y_PARTSLENGTH);
+
+                    GregorianCalendar apu;
+                    String[] parts2;
+                    if(parts[9] != "") {
+                        parts2 = parts[9].split("/");
+                        apu = new GregorianCalendar(
+                            (Integer.parseInt( parts2[2]) - 1900),
+                            (Integer.parseInt(parts2[1]) - 1),
+                            (Integer.parseInt( parts2[0])) );
+                    }
+                    else apu = null;
+                    if(parts[0] != "") { // Ei ole viimeinen tyhjä rivi?
+                        YDnaMatch cmatch = new YDnaMatch(Integer.parseInt(parts[0]), parts[1],
+                            parts[2], parts[3], parts[4], parts[5], parts[6], parts[7], parts[8],
                             apu );
 
-                    add = lista.add(cmatch);
+                        add = lista.add(cmatch);
+                        j2++;
+                    }
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Virhe: " + e);
@@ -101,17 +105,13 @@ public class YDnaMatch extends DnaMatch {
         return lista;
     }
 
-
     @Override
     public String toString() {
-        final char SEPARATOR = ',';
-        final String TAB = "\t";
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         
-        return  "" + super.toString() + Settings.SEPARATOR + name +
-        Settings.TAB + email + Settings.TAB + mda + Settings.TAB + haplo +
-        md.get(Calendar.DAY_OF_MONTH) + "." +
-        (md.get(Calendar.MONTH) + 1) +
-        (md.get(Calendar.YEAR) + 1900);
-
+        return  Settings.TAB +
+                super.toString() + Settings.SEPARATOR + name + // SEPARATOR + fn + SEPARATOR + mn + SEPARATOR + ln +
+                Settings.TAB + email + Settings.TAB + mda + Settings.TAB + haplo +
+                sdf.format(md.getTime());
     }
 }

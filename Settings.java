@@ -14,6 +14,9 @@ public class Settings {
     public static final char SEPARATOR = ',';
     public static final String NL = "\n";
     public static final String TAB = "\t";
+    public static final int MT_PARTSLENGTH = 9;
+    public static final int Y_PARTSLENGTH = 10;
+    public static final int FF_PARTSLENGTH = 12;
     public int debug_state;
     
     public Settings() {

@@ -69,6 +69,7 @@ public class MtDnaMatch extends DnaMatch {
         lista = new ArrayList<>();
         ChromoMatch cm;
         boolean add = false;
+        int j2 = 0;
 
         Settings s = new Settings(0);
 
@@ -81,33 +82,30 @@ public class MtDnaMatch extends DnaMatch {
             
             try {
                 while(scan.hasNextLine()){
+                    String[] parts = new String[8]; // = Tools.split2(line);
                     String line = scan.nextLine();
-                    String[] parts;
-                    parts = line.split(",");
-                    
-                    // Skip citation marks
-                    for(int j=0;j<parts.length;j++) {
-                        if((parts[j]).length() > 2)
-                            parts[j] = (parts[j]).substring(1,(parts[j].length() - 1));
-                        else
-                            parts[j] = "";
-                    }
-                    
-                    String[] parts2;
-                    parts2 = parts[8].split("/");
 
-                    GregorianCalendar apu = new GregorianCalendar(
+                    parts = Tools.split2(line, s.MT_PARTSLENGTH);
+
+                    GregorianCalendar apu;
+                    String[] parts2;
+                    if(parts[8] != "") {
+                        parts2 = parts[8].split("/");
+                        apu = new GregorianCalendar(
                             (Integer.parseInt( parts2[2]) - 1900),
                             (Integer.parseInt(parts2[1]) - 1),
                             (Integer.parseInt( parts2[0])) );
+                    }
+                    else apu = null;
 
-                    MtDnaMatch cmatch = new MtDnaMatch(Integer.parseInt(parts[0]), parts[1],
+                    if(parts[0] != "") { // Ei ole viimeinen tyhjä rivi?
+                        MtDnaMatch cmatch = new MtDnaMatch(Integer.parseInt(parts[0]), parts[1],
                             parts[2], parts[3], parts[4], parts[5], parts[6], parts[7],
                             apu );
-                    
-                    if(s.getDebug() > 1) System.out.println("Sijoitus cmatchiin tehty.");
-                    
-                    add = lista.add(cmatch);
+
+                        add = lista.add(cmatch);
+                        j2++;
+                    }
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Virhe: " + e);
@@ -119,15 +117,15 @@ public class MtDnaMatch extends DnaMatch {
         return lista;
     }
 
-
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         
         return  Settings.TAB +
                 super.toString() + Settings.SEPARATOR + name + // SEPARATOR + fn + SEPARATOR + mn + SEPARATOR + ln +
-                Settings.TAB + email + Settings.TAB + mda + Settings.TAB + haplo +
+                Settings.TAB + email + Settings.TAB + mda + Settings.TAB + haplo + " " +
                 sdf.format(md.getTime());
+                
     }
 }
 

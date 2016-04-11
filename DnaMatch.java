@@ -53,7 +53,8 @@ public abstract class DnaMatch {
     
     @Override
     public String toString() {
-        return day.get(Calendar.DAY_OF_MONTH) + "." + (day.get(Calendar.MONTH) + 1) + "." + (day.get(Calendar.YEAR) + 1900) +
-                " GD=" + gd + " Matchin nimi: " + m + ", MDA = " + mda + ", email = " + email;
+        return day.get(Calendar.DAY_OF_MONTH) + "." + (day.get(Calendar.MONTH) + 1)
+                + "." + (day.get(Calendar.YEAR) + 1900) + " GD=" + gd +
+                " Nimi: " + m + ", MDA = " + mda + ", email = " + email;
     }
 }

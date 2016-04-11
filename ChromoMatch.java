@@ -8,6 +8,7 @@ package chromosomes;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Scanner;
 
@@ -66,6 +67,7 @@ public class ChromoMatch extends DnaMatch {
         lista = new ArrayList<>();
         ChromoMatch cm;
         boolean add = false;
+        int j2 = 0;
         
         try {
             Scanner scan = new Scanner(new File(fn));
@@ -76,9 +78,60 @@ public class ChromoMatch extends DnaMatch {
             
             try {
                 while(scan.hasNextLine()){
+                    String[] parts = new String[8]; // = Tools.split2(line);
+                    String line = scan.nextLine();
+
+                    parts = Tools.split2(line,Settings.FF_PARTSLENGTH);
+/*
+System.out.println("***** Osat *****");
+for(int ai=0;ai<parts.length;ai++)
+    
+    System.out.println("Osa " + ai + "\t" + parts[ai]);
+System.out.println("**** LOPPU ****");
+System.exit(0);
+*/
+                    GregorianCalendar apu;
+                    String[] parts2;
+                    if(parts[8] != "") {
+                        parts2 = parts[4].split("/");
+                        apu = new GregorianCalendar(
+                            (Integer.parseInt( parts2[2]) - 1900),
+                            (Integer.parseInt(parts2[1]) - 1),
+                            (Integer.parseInt( parts2[0])) );
+                    }
+                    else apu = null;
+
+                    if(parts[0] != "") { // Ei ole viimeinen tyhjä rivi?
+                        MtDnaMatch cmatch = new MtDnaMatch(Integer.parseInt(parts[0]), parts[1],
+                            parts[2], parts[3], parts[4], parts[5], parts[6], parts[7],
+                            apu );
+
+//                        add = lista.add(cmatch);
+                        j2++;
+                    }
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Virhe: " + e);
+            }
+        } catch(FileNotFoundException e) {
+                System.out.println("Tiedostoa " + fn + " ei löytynyt.");
+        }
+        
+        return lista;
+                
+    }
+/*                
+                while(scan.hasNextLine()){
                     String line = scan.nextLine();
                     String[] parts;
-                    parts = line.split(",");
+//                    parts = line.split(",");
+
+                    parts = Tools.split5(line,1);
+                    
+System.out.println("***** Osat *****");
+for(int ai=0;ai<parts.length;ai++)
+    System.out.println(parts[ai]);
+System.out.println("**** LOPPU ****");
                     ChromoMatch cmatch;
                     cmatch = new ChromoMatch(parts[0], parts[1],
                             Integer.parseInt(parts[2]),
@@ -94,6 +147,7 @@ public class ChromoMatch extends DnaMatch {
         }
         
         return lista;
+        */
     }
     
     @Override
